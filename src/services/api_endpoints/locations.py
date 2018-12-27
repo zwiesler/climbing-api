@@ -4,10 +4,24 @@ import pandas as pd
 from src.utils import settings as s
 
 
-class LocationSearch:
+class Locations(object):
 
-    def __init__(self):
+    def __init__(self, app):
+        self.app = app
         self.db = psycopg2.connect(dbname=s.POSTGRESQL_DBNAME)
+
+    @staticmethod
+    def get_locations(response):
+        """Return location locationName"""
+        return response['location_name']
+
+    def get_all_locations(self, items):
+        """Returns all location locationNames in the system"""
+        new_items = []
+        for item in items['_items']:
+            new_items.append(self.get_locations(response=item))
+
+        items['_items'] = new_items
 
     def query_location_by_name(self, location_name):
         """
