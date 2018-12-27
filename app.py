@@ -1,8 +1,8 @@
 import os
 from eve import Eve
-from flask import jsonify
 from flask_cors import CORS
 from eve_sqlalchemy import SQL
+from flask import jsonify, request
 from eve_sqlalchemy.validation import ValidatorSQL
 
 from src.data_store.schemas import Base
@@ -28,11 +28,12 @@ app.on_fetched_resource_locations += locations.get_all_locations
 app.on_fetched_item_locations += locations.get_locations
 
 
-@app.route('/')
+@app.route('/api/get_location_coordinates')
 def index():
 
-    ls = Locations()
-    data = ls.query_location_by_name(location_name='Boston')
+    location_name = request.args.get('location_name')
+    print location_name
+    data = locations.query_location_by_name(location_name=location_name)
     return jsonify(data)
 
 

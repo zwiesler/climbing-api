@@ -2,6 +2,7 @@ import psycopg2
 import pandas as pd
 
 from src.utils import settings as s
+from src.data_store import schemas as sch
 
 
 class Locations(object):
@@ -31,10 +32,10 @@ class Locations(object):
         """
         query = 'SELECT {lat_col}, {lng_col} ' \
                 'FROM {locations_table_name} ' \
-                'WHERE {location_name_col} = \'{location_name}\''.format(lat_col=s.lat_col,
-                                                                         lng_col=s.lng_col,
-                                                                         locations_table_name=s.locations_table_name,
-                                                                         location_name_col=s.location_name_col,
+                'WHERE {location_name_col} = \'{location_name}\''.format(lat_col=sch.lat_col,
+                                                                         lng_col=sch.lng_col,
+                                                                         locations_table_name=sch.locations_table_name,
+                                                                         location_name_col=sch.location_name_col,
                                                                          location_name=location_name)
         locations_df = pd.read_sql(query, con=self.db)
         return {
