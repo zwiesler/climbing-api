@@ -40,8 +40,9 @@ def get_location_coordinates():
 @app.route('/api/get_climbing_sheet')
 def get_climbing_sheet():
 
-    google = GoogleSheets()
-    data = google.connect_to_google_sheet_by_location(location='Connecticut')
+    google = GoogleSheets(locations=locations)
+    location_name = request.args.get('location_name')
+    data = google.connect_to_google_sheet_by_location(location=location_name)
     return jsonify(data)
 
 if __name__ == '__main__':

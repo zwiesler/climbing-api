@@ -8,6 +8,8 @@ locations_table_name = 'locations'
 location_name_col = 'location_name'
 lat_col = 'lat'
 lng_col = 'lng'
+state_col = 'state'
+country_col = 'country'
 
 
 class CommonColumns(Base):

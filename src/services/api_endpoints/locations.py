@@ -3,6 +3,7 @@ import pandas as pd
 
 from src.utils import settings as s
 from src.data_store import schemas as sch
+from src.services.api_endpoints import locations_utils as lutils
 
 
 class Locations(object):
@@ -24,21 +25,27 @@ class Locations(object):
 
         items['_items'] = new_items
 
-    def query_location_by_name(self, location_name):
+    def query_location_by_name(self, location_name, query_type='coordinates'):
         """
         Query locations table by location name for coordinates
         :param location_name: {str}
+        :param query_type {str}
         :return: {dict}
         """
-        query = 'SELECT {lat_col}, {lng_col} ' \
+        query_type_dict = {
+            'coordinates': lutils.set_coordinates_cols,
+            'state': lutils.set_state_cols
+        }
+        return_type_dict = {
+            'coordinates': lutils.retrieve_coordinates,
+            'state': lutils.retrieve_state
+        }
+
+        query = 'SELECT {cols} ' \
                 'FROM {locations_table_name} ' \
-                'WHERE {location_name_col} = \'{location_name}\''.format(lat_col=sch.lat_col,
-                                                                         lng_col=sch.lng_col,
+                'WHERE {location_name_col} = \'{location_name}\''.format(cols=', '.join(query_type_dict[query_type]()),
                                                                          locations_table_name=sch.locations_table_name,
                                                                          location_name_col=sch.location_name_col,
                                                                          location_name=location_name)
         locations_df = pd.read_sql(query, con=self.db)
-        return {
-            'lat': locations_df.ix[0].lat,
-            'lng': locations_df.ix[0].lng
-        }
+        return return_type_dict[query_type](locations_df=locations_df)
