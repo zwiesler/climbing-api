@@ -1,5 +1,11 @@
+import os
+import json
+import logging
+
 from src.data_store.schemas import Locations
 from eve_sqlalchemy.config import DomainConfig, ResourceConfig
+
+logging.basicConfig(level=logging.INFO, format='[%(levelname)s] %(message)s', )
 
 
 DOMAIN = DomainConfig({
@@ -20,10 +26,24 @@ URL_PREFIX = 'api'
 CACHE_EXPIRES = 0
 PAGINATION_LIMIT = 10000
 
+POSTGRESQL_HOST = ''
+POSTGRESQL_PORT = ''
+POSTGRESQL_DBNAME = ''
+GOOGLE_CRED = ''
+CLIMBING_SHEET_ID = ''
+
+# get SECRETS
+file_path = os.getenv("SECRETS_JSON", None)
+if file_path is None:
+    logging.error("ENVAR SECRETS_JSON not set")
+
+if file_path is not None:
+    with open(file_path) as fin:
+        vars_ = json.load(fin)
+        for name, value in vars_.iteritems():
+            globals()[name] = value
+
 # Database configs
-POSTGRESQL_HOST = 'localhost'
-POSTGRESQL_PORT = 5432
-POSTGRESQL_DBNAME = 'climbing'
 SQLALCHEMY_DATABASE_URI = 'postgresql://{host}:{port}/{dbname}'.format(host=POSTGRESQL_HOST,
                                                                        port=POSTGRESQL_PORT,
                                                                        dbname=POSTGRESQL_DBNAME)

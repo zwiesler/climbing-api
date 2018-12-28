@@ -7,6 +7,7 @@ from eve_sqlalchemy.validation import ValidatorSQL
 
 from src.data_store.schemas import Base
 from src.services.api_endpoints.locations import Locations
+from src.services.google_sheets.google_sheets import GoogleSheets
 
 # settings
 cur_dir = os.path.dirname(os.path.realpath(__file__))
@@ -29,13 +30,19 @@ app.on_fetched_item_locations += locations.get_locations
 
 
 @app.route('/api/get_location_coordinates')
-def index():
+def get_location_coordinates():
 
     location_name = request.args.get('location_name')
-    print location_name
     data = locations.query_location_by_name(location_name=location_name)
     return jsonify(data)
 
+
+@app.route('/api/get_climbing_sheet')
+def get_climbing_sheet():
+
+    google = GoogleSheets()
+    data = google.connect_to_google_sheet_by_location(location='Connecticut')
+    return jsonify(data)
 
 if __name__ == '__main__':
     app.debug = True
