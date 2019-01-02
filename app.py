@@ -6,6 +6,7 @@ from flask import jsonify, request
 from eve_sqlalchemy.validation import ValidatorSQL
 
 from src.data_store.schemas import Base
+from src.utils.decorators import crossdomain
 from src.services.api_endpoints.locations import Locations
 from src.services.google_sheets.google_sheets import GoogleSheets
 
@@ -29,7 +30,7 @@ app.on_fetched_resource_locations += locations.get_all_locations
 app.on_fetched_item_locations += locations.get_locations
 
 
-@app.route('/api/get_location_coordinates')
+@app.route('/api/get_location_coordinates', methods=['GET'])
 def get_location_coordinates():
 
     location_name = request.args.get('location_name')
@@ -37,11 +38,11 @@ def get_location_coordinates():
     return jsonify(data)
 
 
-@app.route('/api/get_climbing_sheet')
+@app.route('/api/get_climbing_sheet', methods=['GET'])
 def get_climbing_sheet():
 
     google = GoogleSheets(locations=locations)
-    location_name = request.args.get('location_name')
+    location_name = request.args.get('locationName')
     data = google.connect_to_google_sheet_by_location(location=location_name)
     return jsonify(data)
 

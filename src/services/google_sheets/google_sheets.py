@@ -48,11 +48,9 @@ class GoogleSheets(object):
         :return: {JSON}
         """
 
-        print '---debug---'
-        print 'location', location
         state = self.locations.query_location_by_name(location_name=location, query_type='state')[sch.state_col]
-        print 'state', state
-        sheet = self._connect(key=CLIMBING_SHEET_ID, tab=gsutils.google_sheets_locations_tab_map[state])
+        tab_dict = gsutils.google_sheets_locations_tab_map
+        tab = tab_dict[state] if state in tab_dict else 7
+        sheet = self._connect(key=CLIMBING_SHEET_ID, tab=tab)
         df = google_sheet_to_dataframe(sheet=sheet)
-        df = df[gsutils.location_cols]
         return df.to_json(orient='records', date_format='iso')

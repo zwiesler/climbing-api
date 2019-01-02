@@ -14,7 +14,7 @@ google_sheets_index_tab_map = {
     'Yosemite Big Walls': 9,
     'Freerider Path': 10,
     'Moonlight Path': 11,
-    'Coloardo Overview': 12,
+    'Colorado Overview': 12,
     'Projects': 13
 }
 
