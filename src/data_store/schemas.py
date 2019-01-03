@@ -10,6 +10,7 @@ lat_col = 'lat'
 lng_col = 'lng'
 state_col = 'state'
 country_col = 'country'
+tab_col = 'tab'
 
 
 class CommonColumns(Base):

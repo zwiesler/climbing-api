@@ -1,24 +1,5 @@
 from src.data_store import schemas as sch
 
-
-def set_coordinates_cols():
-    """
-    Specify the columns to return when retrieve latitude and longitude coordinates from the database
-
-    :return: {list of str}
-    """
-    return [sch.lat_col, sch.lng_col]
-
-
-def set_state_cols():
-    """
-    Specify the columns to return when retrieve latitude and longitude coordinates from the database
-
-    :return: {list of str}
-    """
-    return [sch.state_col]
-
-
 def retrieve_coordinates(locations_df):
     """
     Return latitude and longitude coordinates from database
@@ -32,11 +13,11 @@ def retrieve_coordinates(locations_df):
     }
 
 
-def retrieve_state(locations_df):
+def retrieve_tab(locations_df):
     """
-    Return latitude and longitude coordinates from database
+    Return tab value from database
 
-    :param locations_df {Pandas dataframe}
-    return: {dict}
+    :param locations_df: {Pandas dataframe}
+    :return: {dict}
     """
-    return {'state': locations_df.ix[0][sch.state_col]}
+    return {'tab': locations_df.ix[0][sch.tab_col]}

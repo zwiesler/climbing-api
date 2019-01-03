@@ -25,25 +25,22 @@ class Locations(object):
 
         items['_items'] = new_items
 
-    def query_location_by_name(self, location_name, query_type='coordinates'):
+    def query_location_by_name(self, location_name, cols, query_type='coordinates'):
         """
         Query locations table by location name for coordinates
         :param location_name: {str}
+        :param cols: {list of str}
         :param query_type {str}
         :return: {dict}
         """
-        query_type_dict = {
-            'coordinates': lutils.set_coordinates_cols,
-            'state': lutils.set_state_cols
-        }
         return_type_dict = {
             'coordinates': lutils.retrieve_coordinates,
-            'state': lutils.retrieve_state
+            'tab': lutils.retrieve_tab
         }
 
         query = 'SELECT {cols} ' \
                 'FROM {locations_table_name} ' \
-                'WHERE {location_name_col} = \'{location_name}\''.format(cols=', '.join(query_type_dict[query_type]()),
+                'WHERE {location_name_col} = \'{location_name}\''.format(cols=', '.join(cols),
                                                                          locations_table_name=sch.locations_table_name,
                                                                          location_name_col=sch.location_name_col,
                                                                          location_name=location_name)

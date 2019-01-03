@@ -47,6 +47,6 @@ class GoogleSheets(object):
         :return: {str}
         """
 
-        state = self.locations.query_location_by_name(location_name=location, query_type='state')[sch.state_col]
-        tab = '1537329742'  # todo here
-        return tab
+        return self.locations.query_location_by_name(location_name=location,
+                                                     cols=[sch.tab_col],
+                                                     query_type='tab')
