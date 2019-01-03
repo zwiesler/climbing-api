@@ -44,7 +44,7 @@ def get_climbing_sheet():
     google = GoogleSheets(locations=locations)
     location_name = request.args.get('locationName')
     data = google.connect_to_google_sheet_by_location(location=location_name)
-    return jsonify(data)
+    return data
 
 if __name__ == '__main__':
     app.debug = True

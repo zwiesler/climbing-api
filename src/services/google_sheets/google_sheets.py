@@ -5,7 +5,6 @@ from oauth2client.service_account import ServiceAccountCredentials
 from src.data_store import schemas as sch
 from src.utils.utils import google_sheet_to_dataframe
 from src.utils.settings import GOOGLE_CRED, CLIMBING_SHEET_ID
-from src.services.google_sheets import google_sheets_utils as gsutils
 
 logging.basicConfig(level=logging.INFO, format='[%(levelname)s] %(message)s', )
 
@@ -45,12 +44,9 @@ class GoogleSheets(object):
         Return Google sheet data by location
 
         :param location: {str}
-        :return: {JSON}
+        :return: {str}
         """
 
         state = self.locations.query_location_by_name(location_name=location, query_type='state')[sch.state_col]
-        tab_dict = gsutils.google_sheets_locations_tab_map
-        tab = tab_dict[state] if state in tab_dict else 7
-        sheet = self._connect(key=CLIMBING_SHEET_ID, tab=tab)
-        df = google_sheet_to_dataframe(sheet=sheet)
-        return df.to_json(orient='records', date_format='iso')
+        tab = '1537329742'  # todo here
+        return tab
